@@ -217,6 +217,7 @@ def cwi():
     data = '{{"text": "{}  "}}'.format(text).encode('utf-8')  # input string ends with two space characters
     headers = {'content-type': 'application/json'}
     response = requests.get(url=localhost_yap, data=data, headers=headers)
+    print(response)
     matrix = json.loads(response.text)['md_lattice'].split('\n')
     matrix = list(filter(None, matrix))
     headers = {'Content-Type': 'text/plain;charset=utf-8'}
