@@ -6,7 +6,6 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true, useNewUrlPar
 	if (e){
 		console.log(e);
 	}	else{
-		console.log("1")
 		db = client.db(process.env.DB_NAME);
 		users = db.collection('Users');
 		words = db.collection('Words');
@@ -116,26 +115,6 @@ exports.validatePasswordKey = function (passKey, ipAddress, callback) {
 /*
 	record insertion, update & deletion methods
 */
-
-exports.addNewCustomer = function(newData, callback)
-{
-	users.findOne({email:newData.email}, function(e, o) {
-		if (o){
-			console.log(newData.email + " is taken!");
-			callback('email-taken');
-		}	else{
-			saltAndHash(newData.pass, function(hash){
-				newData.pass = hash;
-			// append date stamp when record was created //
-				newData.date = moment().format('DD/MM/YY, HH:mm:ss');
-				newData.class = "customer";
-				newData.orders = [];
-				console.log(newData.name + " has been created in database!");
-				users.insertOne(newData, callback);
-			});
-		}
-	});
-}
 /*
 exports.addNewMovie = function(newData, callback)
 {
@@ -300,32 +279,80 @@ exports.updateMovie = function(newData, callback)
 	});
 }*/
 
-exports.updateAccount = function(id,newData, callback)
+exports.updateUser = function(email,newData, callback)
 {
 	users.findOne({email:newData.email}, function(e, o) {
-		if (o && o._id != id) {
+		if (o && o.email != email) {
 			console.log(newData.email + " is taken!");
 			callback('email-taken');
 		}
 		else
 		{
-			users.findOne({_id:getObjectId(id)}, function(e, o) {
+			users.findOne({email:email}, function(e, o) {
 				if(newData.pass != "")
 				{
 					saltAndHash(newData.pass, function(hash){
 						o.pass = hash;
 						o.name = newData.name;
 						o.email = newData.email;
-						users.findOneAndUpdate({_id:getObjectId(id)}, {$set:o}, {returnOriginal : false}, callback(null,o));
+						o.class = newData.class;
+						users.findOneAndUpdate({email:email}, {$set:o}, {returnOriginal : false}, callback(null,o));
 					});
 				}
 				else
 				{
 					o.name = newData.name;
 					o.email = newData.email;
-					users.findOneAndUpdate({_id: getObjectId(id)}, {$set: o}, {returnOriginal: false}, callback(null, o));
+					o.class = newData.class;
+					users.findOneAndUpdate({email:email}, {$set: o}, {returnOriginal: false}, callback(null, o));
 				}
 			});
+		}
+	});
+}
+
+exports.CreateNewUser = function(newData, callback)
+{
+	users.findOne({email:newData.email}, function(e, o) {
+		if (o){
+			console.log(newData.email + " is taken!");
+			callback('user-taken');
+		}
+		else{
+				saltAndHash(newData.pass, function (hash) {
+					newData.pass = hash;
+					console.log(newData.name + " has been created in database!");
+					users.insertOne(newData, callback);
+			});
+		}
+	});
+}
+
+exports.CreateNewWord = function(newData, callback)
+{
+	words.findOne({word:newData.word, pos:newData.pos}, function(e, o) {
+		if (o){
+			if(o.syn.includes(newData.syn))
+			{
+				console.log(newData.word +" - " + newData.syn + " is already in database!");
+				callback('already in database');
+			}
+			else {
+				o.syn.unshift(newData.syn);
+				o.rating.unshift([]);
+				words.findOneAndUpdate({word:newData.word, pos:newData.pos}, {$set: o}, {returnOriginal: false}, callback(null, o));
+			}
+		}
+		else{
+			o = {};
+			o.word = newData.word;
+			o.pos = newData.pos;
+			o.syn = [];
+			o.syn.unshift(newData.syn);
+			o.rating = [];
+			o.rating.unshift([]);
+			console.log(newData.word + " - " + newData.syn + " has been created in database!");
+			words.insertOne(o, callback);
 		}
 	});
 }
@@ -338,39 +365,48 @@ exports.updatePassword = function(passKey, newPass, callback)
 	});
 }
 
-/*
-exports.getAllMovies = function(callback)
-{
-	movies.find().toArray(
-		function(e, res) {
-			if (e) callback(e)
-			else callback(null, res);
-		});
-}
-
-exports.getAllScreenings = function(callback)
-{
-	screenings.find().sort( [[ 'date', 1 ]] ).toArray(
-		function(e, res) {
-			if (e) callback(e)
-			else callback(null, res);
-		});
-}
-*/
-
-exports.deleteMyAccount = function(id, callback)
+exports.deleteMyUser = function(id, callback)
 {
 	console.log("The user has been deleted!");
 	users.deleteOne({_id: getObjectId(id)}, callback);
 }
 
-exports.deleteAccount = function(email, callback)
+exports.deleteUser = function(email, callback)
 {
 	users.findOne({email:email}, function(e, o) {
 		if (o) {
-			users.deleteOne({email: email}, callback);
+			users.deleteOne({email: email});
 			console.log("The user" + email + " has been deleted!");
 			callback(null);
+		}
+		else
+		{
+			callback('not-found');
+		}
+	});
+}
+
+exports.deleteWord = function(wordsynpos, callback)
+{
+	wordsynpos = wordsynpos.split("-");
+	let word = wordsynpos[0];
+	let syn = wordsynpos[1];
+	let pos = wordsynpos[2];
+	words.findOne({word:word, pos:pos}, function(e, o) {
+		if (o) {
+			if(o.syn.length == 1)
+			{
+				words.deleteOne({word:word, pos:pos});
+				console.log("The word " + word + pos + " has been deleted!");
+				callback(null);
+			}
+			else
+			{
+				let index = o.syn.indexOf(syn);
+				o.syn.splice(index, 1);
+				o.rating.splice(index,1);
+				words.findOneAndUpdate({word:word, pos:pos}, {$set: o}, {returnOriginal: false}, callback(null, o));
+			}
 		}
 		else
 		{
@@ -382,6 +418,15 @@ exports.deleteAccount = function(email, callback)
 exports.getAllUsers = function(callback)
 {
 	users.find().toArray(
+		function(e, res) {
+			if (e) callback(e)
+			else callback(null, res);
+		});
+}
+
+exports.getAllWords = function(callback)
+{
+	words.find().toArray(
 		function(e, res) {
 			if (e) callback(e)
 			else callback(null, res);
