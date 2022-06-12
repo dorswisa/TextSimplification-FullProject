@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="34.76.106.188" id="2eae5127-baef-4024-b8fe-9f49d16fefd5" keyPath="C:\Users\Swisa\Downloads\textsimplification-34.76.106.188 (1).ppk" port="22" nameFormat="DESCRIPTIVE" username="textsimplification" />
+    </configs>
+  </component>
+</project>

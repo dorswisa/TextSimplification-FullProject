@@ -1,0 +1,97 @@
+doctype html
+block content
+    - user = typeof(udata) != 'undefined' ? udata : undefined
+
+    meta(charset='UTF-8')
+    title TextSimplification
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    meta(charset='UTF-8')
+    link(rel='icon', href='css/logo1.png')
+    script(src='https://unpkg.com/axios/dist/axios.min.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+    script(src='https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js' integrity='sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn' crossorigin='anonymous')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js' integrity='sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T' crossorigin='anonymous')
+    link(rel='stylesheet' type='text/css' href='css/normalize.css')
+    link(rel='stylesheet' type='text/css' href='fonts/font-awesome-4.2.0/css/font-awesome.min.css')
+    link(rel='stylesheet' type='text/css' href='css/menu_cornermorph.css')
+    link(rel='stylesheet' type='text/css' href='css/styles.css')
+
+    .container
+        .menu-wrap
+            if( user !== undefined )
+                nav.menu
+                    .profile
+                        a(href='/edit-user')
+                            span=user.name
+                        img(src='img/user1.png' alt=user.name)
+                    .link-list
+                        a(href='/syns-manager')
+                            span Synonyms Manager
+                        if( user.class == "admin" )
+                            a(href='/users-manager')
+                                span Users Manager
+                    .icon-list
+                        a(href='#')
+                            i.fa.fa-fw.fa-power-off#btn-logout
+
+        if( user !== undefined )
+            button#open-button.menu-button
+                i.fa.fa-fw.fa-cog
+                span Open Menu
+        else
+            img(src='img/login.png').cd-login
+
+        .content-wrap
+            header.con-header
+                a(href='/')
+                    svg(viewboxsize='845.7999877929688' data-root-id='1235781114213' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewbox='0 0 410.67999267578125 473.9000244140625' height='135.98367309570312' width='117.8429113284579' y='318.697' x='363.979' preserveaspectratio='xMinYMin' zoom='0.67' data-layer-role='icon' style='height: 135.984px; width: 117.843px; top: 318.697px; left: 363.979px;')
+                        lineargradient#linear-gradient(x1='114.92' y1='195.74' x2='1075.19' y2='648.34' gradientunits='userSpaceOnUse' name='Layer 1' zoom='0.67' data-layer-id='6270017214213')
+                            stop(offset='0' stop-color='#b69561')
+                            stop(offset='0.09' stop-color='#e9d397')
+                            stop(offset='0.12' stop-color='#dfc68c')
+                            stop(offset='0.2' stop-color='#cdb179')
+                            stop(offset='0.29' stop-color='#c0a16b')
+                            stop(offset='0.38' stop-color='#b89863')
+                            stop(offset='0.52' stop-color='#b69561')
+                            stop(offset='0.64' stop-color='#ba9964')
+                            stop(offset='0.76' stop-color='#c7a56d')
+                            stop(offset='0.88' stop-color='#dcb97c')
+                            stop(offset='1' stop-color='#f9d591')
+                        lineargradient#linear-gradient-2(x1='116' y1='193.44' x2='1076.27' y2='646.05' xlink:href='#linear-gradient' name='Layer 2' zoom='0.67' data-layer-id='0320996914213')
+                        polygon#Calque_1-2.cls-1(dataname='Calque 1' points='346.68 69.45 346.68 314.29 280.68 352.54 280.68 265.77 131.68 265.77 131.68 431.17 138.34 435.03 205.41 473.9 205.42 473.9 280.68 430.29 346.68 392.04 410.68 354.95 410.68 106.54 346.68 69.45' name='Layer 3' zoom='0.67' data-layer-id='1364297214213' style='fill: rgb(64, 77, 91); fill-opacity: 1;')
+                        polygon#Calque_1-2.cls-2(dataname='Calque 1' points='279 208.13 279 42.73 272.34 38.87 205.27 0 205.26 0 130 43.61 64 81.86 0 118.95 0 367.36 64 404.45 64 159.61 130 121.36 130 208.13 279 208.13' name='Layer 4' zoom='0.67' data-layer-id='0735050314213' style='fill: url("#linear-gradient-2");')
+
+                    h1
+                        | Hebrew Text Simplification - &#x5E4;&#x5D9;&#x5E9;&#x5D5;&#x5D8; &#x5D8;&#x5E7;&#x5E1;&#x5D8;
+                        .info-group Group 100 - &#x5E7;&#x5D1;&#x5D5;&#x5E6;&#x5D4; 100
+                        .info-users 316055144 - &#x5D3;&#x5D5;&#x5E8; &#x5E1;&#x5D5;&#x5D9;&#x5E1;&#x5D4;
+                        .info-users 209261007 - &#x5E2;&#x5DE;&#x5D9; &#x5D1;&#x5D9;&#x5EA;&#x5DF;
+                        .info-users 311425912 - &#x5EA;&#x5DE;&#x5D9;&#x5E8; &#x5D0;&#x5D1;&#x5D5;&#x5D8;&#x5D1;&#x5D5;&#x5DC;
+            section.bgcolor-1
+                form(method="post")#edit-user-form
+                    .page-info
+                        h1 Edit User
+                    .form-group
+                        input#edit-username.form-control(name='edit-username' placeholder=' ' type='text' required='' style='box-shadow: none;border-radius:0px; background-color: transparent; outline: none;' value=user.name)
+                        label.input-form(for='edit-username') Full Name
+                    .form-group
+                        input#edit-email.form-control(name='edit-email' placeholder=' ' type='email' pattern='[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+' required='' style='box-shadow: none;border-radius:0px; background-color: transparent; outline: none;' value=user.email)
+                        label.input-form(for='edit-email') E-mail
+                    .form-group
+                        input#edit-password.form-control(name='edit-password' placeholder=' ' type='password' pattern=".{6,}"  title="Password Should Be At Least 6 Characters" style='box-shadow: none;border-radius:0px; background-color: transparent; outline: none;' readonly onfocus="this.removeAttribute('readonly');")
+                        label.input-form(for='edit-password') Password
+                        a.hide-password(href='#0')
+                            img(src='/css/visibility.png')
+                    .cd_modal-footer(style="display:block;")
+                        button.btn.btfooter(type='submit' style="min-width: 100px; width: 40%; float:left;") Save
+                        button.btn-danger#btn-delete(type='button' style='min-width: 80px; width: 20%; border-radius: 34rem;font-size: 14px; font-weight: bold; height: 46px; border: none; padding: 10px; margin-right: 5px; outline: none; float:right;') Delete
+                        button.bg-warning#btn-logout2(type='button' style='min-width: 80px; width: 20%; border-radius: 34rem;font-size: 14px; font-weight: bold; height: 46px; border: none; padding: 10px; margin-right: 5px; outline: none; float:right;') Log-Out
+
+
+    script(src='js/classie.js')
+    script(src='js/main.js')
+
+    include modals/error
+    include modals/delete

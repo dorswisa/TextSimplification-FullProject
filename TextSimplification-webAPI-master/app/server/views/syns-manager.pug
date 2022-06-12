@@ -1,0 +1,274 @@
+doctype html
+block content
+    - user = typeof(udata) != 'undefined' ? udata : undefined
+
+    meta(charset='UTF-8')
+    title TextSimplification
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    meta(charset='UTF-8')
+    link(rel='icon', href='css/logo1.png')
+    script(src='https://unpkg.com/axios/dist/axios.min.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+    script(src='https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js' integrity='sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn' crossorigin='anonymous')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js' integrity='sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T' crossorigin='anonymous')
+    link(rel='stylesheet' type='text/css' href='css/normalize.css')
+    link(rel='stylesheet' type='text/css' href='fonts/font-awesome-4.2.0/css/font-awesome.min.css')
+    link(rel='stylesheet' type='text/css' href='css/menu_cornermorph.css')
+    link(rel='stylesheet' type='text/css' href='css/styles.css')
+
+    .container
+        .menu-wrap
+            if( user !== undefined )
+                nav.menu
+                    .profile
+                        a(href='/edit-user')
+                            span=user.name
+                        img(src='img/user1.png' alt=user.name)
+                    .link-list
+                        a(href='/syns-manager')
+                            span Synonyms Manager
+                        if( user.class == "admin" )
+                            a(href='/users-manager')
+                                span Users Manager
+                    .icon-list
+                        a(href='#')
+                            i.fa.fa-fw.fa-power-off#btn-logout
+
+        if( user !== undefined )
+            button#open-button.menu-button
+                i.fa.fa-fw.fa-cog
+                span Open Menu
+        else
+            img(src='img/login.png').cd-login
+
+        .content-wrap
+            header.con-header
+                a(href='/')
+                    svg(viewboxsize='845.7999877929688' data-root-id='1235781114213' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewbox='0 0 410.67999267578125 473.9000244140625' height='135.98367309570312' width='117.8429113284579' y='318.697' x='363.979' preserveaspectratio='xMinYMin' zoom='0.67' data-layer-role='icon' style='height: 135.984px; width: 117.843px; top: 318.697px; left: 363.979px;')
+                        lineargradient#linear-gradient(x1='114.92' y1='195.74' x2='1075.19' y2='648.34' gradientunits='userSpaceOnUse' name='Layer 1' zoom='0.67' data-layer-id='6270017214213')
+                            stop(offset='0' stop-color='#b69561')
+                            stop(offset='0.09' stop-color='#e9d397')
+                            stop(offset='0.12' stop-color='#dfc68c')
+                            stop(offset='0.2' stop-color='#cdb179')
+                            stop(offset='0.29' stop-color='#c0a16b')
+                            stop(offset='0.38' stop-color='#b89863')
+                            stop(offset='0.52' stop-color='#b69561')
+                            stop(offset='0.64' stop-color='#ba9964')
+                            stop(offset='0.76' stop-color='#c7a56d')
+                            stop(offset='0.88' stop-color='#dcb97c')
+                            stop(offset='1' stop-color='#f9d591')
+                        lineargradient#linear-gradient-2(x1='116' y1='193.44' x2='1076.27' y2='646.05' xlink:href='#linear-gradient' name='Layer 2' zoom='0.67' data-layer-id='0320996914213')
+                        polygon#Calque_1-2.cls-1(dataname='Calque 1' points='346.68 69.45 346.68 314.29 280.68 352.54 280.68 265.77 131.68 265.77 131.68 431.17 138.34 435.03 205.41 473.9 205.42 473.9 280.68 430.29 346.68 392.04 410.68 354.95 410.68 106.54 346.68 69.45' name='Layer 3' zoom='0.67' data-layer-id='1364297214213' style='fill: rgb(64, 77, 91); fill-opacity: 1;')
+                        polygon#Calque_1-2.cls-2(dataname='Calque 1' points='279 208.13 279 42.73 272.34 38.87 205.27 0 205.26 0 130 43.61 64 81.86 0 118.95 0 367.36 64 404.45 64 159.61 130 121.36 130 208.13 279 208.13' name='Layer 4' zoom='0.67' data-layer-id='0735050314213' style='fill: url("#linear-gradient-2");')
+
+                    h1
+                        | Hebrew Text Simplification - &#x5E4;&#x5D9;&#x5E9;&#x5D5;&#x5D8; &#x5D8;&#x5E7;&#x5E1;&#x5D8;
+                        .info-group Group 100 - &#x5E7;&#x5D1;&#x5D5;&#x5E6;&#x5D4; 100
+                        .info-users 316055144 - &#x5D3;&#x5D5;&#x5E8; &#x5E1;&#x5D5;&#x5D9;&#x5E1;&#x5D4;
+                        .info-users 209261007 - &#x5E2;&#x5DE;&#x5D9; &#x5D1;&#x5D9;&#x5EA;&#x5DF;
+                        .info-users 311425912 - &#x5EA;&#x5DE;&#x5D9;&#x5E8; &#x5D0;&#x5D1;&#x5D5;&#x5D8;&#x5D1;&#x5D5;&#x5DC;
+            section.bgcolor-1
+                .page-info
+                    h1 Synonyms Management
+                #panel1.container
+                    .form-group(style="padding: 1em; display: flex;padding: 1em;flex-direction: row; justify-content: space-evenly; outline:none;")
+                        input.form-control(type='text' placeholder='Search words' )#search
+                        button#newuser.btfooter Create New Word
+
+                    .form-group(style="padding: 0.5em 2em 0.5em 2em; display: flex; flex-direction: row; justify-content: space-evenly; outline:none;")
+                        table.table.table-bordered.table-hover
+                            thead
+                                tr.dropup
+                                    th Word
+                                    th POS
+                                    th Synonym
+                                    th Rating
+                                    th(style="width: 15%;") Actions
+                            tbody#users
+                                each word in words
+                                    - for (var i=0; i<word.syn.length; i++)
+                                        tr
+                                            td=word.word
+                                            td=word.pos
+                                            td=word.syn[i]
+                                            td=word.rating[i]
+                                            td
+                                                button.button.button--isi(name="delete" data-word=word.word+"-"+word.syn[i]+"-"+word.pos)
+                                                    i.fa.fa-fw.fa-trash
+                                                    span Delete
+
+
+                #panel2
+                    h2#title
+                    form.manager-form
+                        .form-group
+                            input#word.form-control(name='word' placeholder=' ' required type='text' style='box-shadow: none;border-radius:0px; background-color: transparent; outline: none;')
+                            label.input-form(for='word') Word
+                        .form-group
+                            input#synonym.form-control(name='synonym' placeholder=' ' required type='text' style='box-shadow: none;border-radius:0px; background-color: transparent; outline: none;')
+                            label.input-form(for='synonym') Synonym
+                        .form-group
+                            select#pos.form-control(name='pos' style='box-shadow: none; border-radius: 0px;background-color: transparent; margin-bottom: 4em; float: left; font-size: 24px;color: #404d5b; opacity: 0.5;border-bottom: 1px black solid;padding: 0px;')
+                                option(value='' disabled='' selected='' style='background: white;') Select POS
+                                each item in ["ABVERB","AT","BN","BNN","CC","CD","CDT","CONJ","COP","COP_TOINFINITIVE","DEF","DT","DTT","DUMMY_AT","EX","IN","INTJ","JJ","JJT","MD","NN","NN_S_PP","NNP","NNT","P","POS","PREPOSITION","PRP","QW","S_PRN","TEMP","VB","VB_TOINFINITIVE","yyCLN","yyCM","yyDASH","yyDOT","yyELPS","yyEXCL","yyLRB","yyQM","yyQUOT","yyRRB","yySCLN","RB","NEG","BNT","TTL","NNPT"]
+                                    option(style='background: white;' value=item)=item
+                        .text-right
+                            button.btn.btfooter#submit(type='submit' style="min-width: 100px; width: 30%; border-radius: 0.25rem; color: white;") Create Word
+                            button.btn.btn-secondary(style="height: 46px;")#cancel Cancel
+
+    script.
+        let word, wordele, words = !{JSON.stringify(words)};
+        jQuery(document).ready(function($) {
+            $("#panel2").hide();
+
+            $('button[name="delete"]').click(deleteFunction);
+
+            function deleteFunction() {
+                word = this.getAttribute("data-word");
+                $('#delete-modal-title').html('Warning!');
+                $('#delete-modal-body').html('Are you sure you want to delete the word ( ' + word + ' ).');
+                $('#delete-modal').modal('show');
+            };
+
+            $('#search').on('keyup', (e) => {
+                let text = $('#search').val()
+                let fullContent = [];
+                words.forEach(el => el.syn.forEach(sy => fullContent.push({"word": el.word, "pos": el.pos, "syn": sy, "rating": el.rating[el.syn.indexOf(sy)]})))
+                let filterd = fullContent.filter(el => el.word.includes(text) || el.syn.includes(text) || el.rating.includes(parseInt(text)) || el.pos.includes(text))
+                let output = ``;
+
+                filterd.forEach(el => output += `<tr><td>${el.word}</td>
+                                                 <td>${el.pos}</td>
+                                                 <td>${el.syn}</td>
+                                                 <td>${el.rating}</td>
+                                                 <td>
+                                                    <button class="button button--isi" name="delete" data-word=${el.word+"-"+el.syn+"-"+el.pos}><i class="fa fa-fw fa-trash"></i><span>Delete</span></button>
+                                                 </td></tr>`);
+                $('#users').html(output);
+                $('button[name="delete"]').click(deleteFunction);
+            });
+
+            $('#newuser').click(function () {
+                document.getElementById("title").textContent = "Create New Synonym";
+                document.getElementById("submit").textContent = "Create Synonym";
+                $("#panel1").hide();
+                $("#panel2").show();
+            });
+
+            $('#cancel').click(function () {
+                $("#panel2").hide();
+                $("#panel1").show();
+            });
+
+            $('#delete-access').click(function () {
+                $('#delete-modal').modal('hide');
+                $.ajax({
+                    url: '/delete-word',
+                    data: word,
+                    type: 'POST',
+                    success: function (data) {
+                        $('#alert-modal-title').html('Delete successful!');
+                        $('#alert-modal-body').html('The Synonym has been deleted.<br>Redirecting you back to the synonyms manger page.');
+                        $('#alert-modal').modal('show');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 3000);
+                    },
+                    error: function (jqXHR) {
+                        console.log(jqXHR.responseText + ' :: ' + jqXHR.statusText);
+                    }
+                });
+            });
+
+            $('#submit').click(function () {
+                $('#panel2').ajaxForm({
+                    type: 'POST',
+                    url: '/create-word',
+                    success: function (responseText, status, xhr, $form) {
+                        if (status == 'success') {
+                            $('#alert-modal-title').html('Creation Success!');
+                            $('#alert-modal-body').html('The word has been created. <br>Refreshing the page.');
+                            $('#alert-modal').modal('show');
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 3000);
+                        }
+                    },
+                    error: function (e) {
+                        if (e.responseText == 'already in database') {
+                            $('#alert-modal-title').html('Creation Failure!');
+                            $('#alert-modal-body').html('This information has already in database.');
+                            $('#alert-modal').modal('show');
+                        }
+                    }
+                });
+            });
+
+            $('#btn-logout, #btn-logout2').click(function () {
+                $.ajax({
+                    url: '/logout',
+                    type: 'POST',
+                    data: {logout: true},
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function (data) {
+                        $('#alert-modal-title').html('Log-Out Successful!');
+                        $('#alert-modal-body').html('Redirecting you back to the homepage.');
+                        $('#alert-modal').modal('show');
+                        setTimeout(function () {
+                            window.location.href = '/';
+                        }, 3000);
+                    },
+                    error: function (jqXHR) {
+                        console.log(jqXHR.responseText + ' :: ' + jqXHR.statusText);
+                    }
+                });
+            });
+        });
+
+
+        (function () {
+
+            var bodyEl = document.body,
+                content = document.querySelector('.content-wrap'),
+                openbtn = document.getElementById('open-button'),
+                isOpen = false;
+
+            function init() {
+                initEvents();
+            }
+
+            function initEvents() {
+                openbtn?.addEventListener('click', toggleMenu);
+
+                // close the menu element if the target it´s not the menu element or one of its descendants..
+                content.addEventListener('click', function (ev) {
+                    var target = ev.target;
+                    if (isOpen && target !== openbtn) {
+                        toggleMenu();
+                    }
+                });
+            }
+
+            function toggleMenu() {
+                if (isOpen) {
+                    classie.remove(bodyEl, 'show-menu');
+                } else {
+                    classie.add(bodyEl, 'show-menu');
+                }
+                isOpen = !isOpen;
+            }
+
+            init();
+
+        })();
+
+    script(src='js/classie.js')
+
+    include modals/error
+    include modals/delete
+
+

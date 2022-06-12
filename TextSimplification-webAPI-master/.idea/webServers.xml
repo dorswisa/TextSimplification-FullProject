@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="bbb78ed1-d25e-4b07-ad69-79bf4c751d3d" name="TextSimplification">
+        <fileTransfer accessType="SFTP" host="34.76.106.188" port="22" sshConfigId="2eae5127-baef-4024-b8fe-9f49d16fefd5" sshConfig="textsimplification@34.76.106.188:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

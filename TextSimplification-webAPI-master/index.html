@@ -1,0 +1,108 @@
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>TextSimplification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <div class="container">
+        <header class="con-header">
+            <h1>Text Simplification - פישוט טקסט
+                <div class="info-group">Group 100 - קבוצה 100</div>
+                <div class="info-users">316055144 - דור סויסה</div>
+                <div class="info-users">209261007 - עמי ביתן</div>
+                <div class="info-users">311425912 - תמיר אבוטבול</div>
+            </h1>
+        </header>
+        <section class="bgcolor-1">
+            <span class="input--haruki">
+                <textarea class="input__field input__field--haruki" type="text" id="input-text" dir="rtl"></textarea>
+                <label class="input__label input__label--haruki" for="input-text">
+                    <span class="input__label-content input__label-content--haruki">...אנא הכנס טקסט</span>
+                </label>
+            </span>
+            <button class="button button--nina button--text-thick button--text-upper button--size-s" data-text="פשט" id="simplify">
+                <span>ט</span><span>ש</span><span>פ</span>
+            </button>
+        </section>
+        <section class="bgcolor-2">
+            <h2 class="nomargin-top">טוקניזציה</h2>
+            <h4 class="no-results">.לחץ על "פשט" על מנת לראות תוצאות</h4>
+            <h2 class="sentence"> : משפט 1
+                <div class="word">מה</div>
+                <div class="word">קורה</div>
+                <div class="word">פה</div>
+            </h2>
+            <h2 class="sentence"> : משפט 2
+                <div class="word">זה</div>
+            </h2>
+            <h2 class="sentence"> : משפט 3
+                <div class="word">פה</div>
+            </h2>
+            </span>
+        </section>
+    </div>
+</body>
+<script>
+    (function() {
+        if (!String.prototype.trim) {
+            (function() {
+                // Make sure we trim BOM and NBSP
+                var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                String.prototype.trim = function() {
+                    return this.replace(rtrim, '');
+                };
+            })();
+        }
+
+        [].slice.call( document.querySelectorAll( 'textarea.input__field' ) ).forEach( function( inputEl ) {
+            // in case the input is already filled..
+            if( inputEl.value.trim() !== '' ) {
+                inputEl.parentElement.classList.add('input--filled');
+            }
+
+            // events:
+            inputEl.addEventListener( 'focus', onInputFocus );
+            inputEl.addEventListener( 'blur', onInputBlur );
+        } );
+
+        function onInputFocus( ev ) {
+            ev.target.parentElement.classList.add('input--filled');
+        }
+
+        function onInputBlur( ev ) {
+            if( ev.target.value.trim() === '' ) {
+                ev.target.parentElement.classList.remove('input--filled');
+            }
+        }
+
+        document.getElementById("simplify").addEventListener('click', tokenizeFunc);
+
+        function tokenizeFunc() {
+            var text = document.querySelectorAll( 'textarea.input__field' )[0].value;
+            var sentences = text.split(".").filter(el => el);
+            if(sentences.length == 0)
+            {
+                document.getElementsByClassName('no-results')[0].textContent = '."לא נמצאו תוצאות, עלייך להזין טקסט ולאחר מכן ללחוץ על "פשט';
+            }
+            else
+            {
+                sentences.forEach( function (senteceEl) {
+                    var data = '{"text": "'+senteceEl+'  "}';
+                    axios.post("http://77.125.136.218:8000/yap/heb/joint", {
+                        body: data
+                    })
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                });
+            }
+        }
+    })();
+</script>
+</html>
