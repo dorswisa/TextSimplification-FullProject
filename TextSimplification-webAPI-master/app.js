@@ -98,7 +98,7 @@ app.get('/edit-user', function(req, res) {
 
 app.get('/users-manager', function(req, res) {
 	if (req.session.user == null){
-		res.redirect(url+'/');
+		res.redirect('/');
 	}	else{
 		DBM.getAllUsers(function(e, users) {
 			res.render('users-manager', {
@@ -109,11 +109,24 @@ app.get('/users-manager', function(req, res) {
 	}
 });
 
-app.post('/edit-user', function(req, res){
+app.get('/syns-manager', function(req, res) {
 	if (req.session.user == null){
 		res.redirect('/');
 	}	else{
-		DBM.updateAccount( req.session.user._id,{
+		DBM.getAllWords(function(e, words) {
+			res.render('syns-manager', {
+				udata: req.session.user,
+				words: words
+			});
+		});
+	}
+});
+
+app.post('/edit-myuser', function(req, res){
+	if (req.session.user == null){
+		res.redirect('/');
+	}	else{
+		DBM.updateUser( req.session.user.email,{
 			name	: req.body['edit-username'],
 			email	: req.body['edit-email'],
 			pass	: req.body['edit-password']
@@ -129,7 +142,7 @@ app.post('/edit-user', function(req, res){
 });
 
 app.post('/delete-myuser', function(req, res){
-	DBM.deleteMyAccount(req.session.user._id, function(e, obj){
+	DBM.deleteMyUser(req.session.user._id, function(e, obj){
 		if (!e){
 			res.clearCookie('login');
 			req.session.destroy(function(e){ res.status(200).send('ok'); });
@@ -148,7 +161,7 @@ app.post('/delete-user', function(req, res){
 		res.status(400).send("error");
 	}
 	else{
-		DBM.deleteAccount(req.body['email'], function(e){
+		DBM.deleteUser(Object.keys(req.body)[0], function(e){
 			if (e){
 				res.status(400).send(e);
 			}	else{
@@ -158,10 +171,126 @@ app.post('/delete-user', function(req, res){
 	}
 });
 
-app.post('/tokenize', function (req, res) {
-	axios.post("http://34.76.106.188:8000/yap/heb/joint", req.body.body)
-	.then(function (response) {
-		res.send(response.data)
+app.post('/edit-user', function(req, res){
+	if (req.session.user == null && req.session.user.type != "admin"){
+		res.redirect('/');
+	}	else{
+		DBM.updateUser( req.body.pastemail,{
+			name	: req.body['username'],
+			email	: req.body['email'],
+			pass	: req.body['password'],
+			class	: req.body['class']
+		}, function(e, o){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				res.status(200).send('ok');
+			}
+		});
+	}
+});
+
+app.post('/create-user', function(req, res){
+	if (req.session.user == null || req.session.user.class != "admin"){
+		res.redirect('/');
+	}	else{
+		DBM.CreateNewUser({
+			name	: req.body['username'],
+			email	: req.body['email'],
+			pass	: req.body['password'],
+			class	: req.body['class']
+		}, function(e, o){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				res.status(200).send('ok');
+			}
+		});
+	}
+});
+
+app.post('/delete-word', function(req, res){
+	if (req.session.user == null){
+		res.redirect('/');
+	}
+	else if(req.session.user.class != "admin")
+	{
+		res.status(400).send("error");
+	}
+	else{
+		DBM.deleteWord(Object.keys(req.body)[0], function(e){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				res.status(200).send('ok');
+			}
+		});
+	}
+});
+
+app.post('/create-word', function(req, res){
+	if (req.session.user == null || req.session.user.class != "admin"){
+		res.redirect('/');
+	}	else{
+		DBM.CreateNewWord({
+			word	: req.body['word'],
+			syn	: req.body['synonym'],
+			pos	: req.body['pos'],
+		}, function(e, o){
+			if (e){
+				res.status(400).send(e);
+			}	else{
+				res.status(200).send('ok');
+			}
+		});
+	}
+});
+
+app.post('/tokenize', async function (req, res) {
+	console.log(req.body.body)
+	axios.get(encodeURI("http://localhost:3005/cwi?text="+req.body.body))
+	.then(async function (response) {
+		let wordsElement = response.data;
+		console.log(wordsElement);
+		DBM.getAllWords(async function(e, words) {
+			wordsElement.map(Element => {let syn = words.find(el => el.word == Element.word && el.pos == Element.pos)?.syn;
+			if (syn) {
+				Element["synonym"] = syn[0];
+				Element["change"] = true;
+				Element["complex"] = true;
+ 			}});
+			for(var i=0; i<wordsElement.length; i++)
+			{
+				if(wordsElement[i].complex && !wordsElement[i].change)
+				{
+					var obj = await axios.get(encodeURI("http://localhost:3005/synonym?word=" + wordsElement[i].word + "-" + wordsElement[i].pos))
+					if (obj.data != "None") {
+						wordsElement[i]["synonym"] = obj.data;
+						wordsElement[i]["change"] = true;
+					}
+				}
+			}
+			wordsElement.map(Element => {let syn = words.find(el => el.word == Element.synonym && el.pos == Element.pos)?.syn;
+				if (syn) {
+					Element["synonym"] = syn[0];
+					Element["change"] = true;
+					Element["complex"] = true;
+				}});
+			for(var i=0; i<wordsElement.length; i++)
+			{
+				if(wordsElement[i].change)
+				{
+					DBM.CreateNewWord({
+						word	: wordsElement[i].word,
+						syn	: wordsElement[i].synonym,
+						pos	: wordsElement[i].pos,
+					}, function(e, o){
+						if (e){}
+					});
+				}
+			}
+			res.status(200).send(wordsElement);
+		});
 	})
 	.catch(function (error) {
 		res.send(error)
