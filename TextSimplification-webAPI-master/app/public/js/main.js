@@ -98,7 +98,6 @@ jQuery(document).ready(function($){
 
 
 	$('#btn-logout, #btn-logout2').click(function () {
-		console.log("wow");
 		$.ajax({
 			url: '/logout',
 			type: 'POST',
@@ -122,7 +121,7 @@ jQuery(document).ready(function($){
 
 	$('#edit-user-form').ajaxForm({
 		type: 'POST',
-		url: '/edit-user',
+		url: '/edit-myuser',
 		success: function (responseText, status, xhr, $form) {
 			if (status == 'success'){
 				$('#alert-modal-title').html('Edit Successful!');
